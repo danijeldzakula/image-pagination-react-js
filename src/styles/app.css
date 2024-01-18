@@ -1,0 +1,591 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+
+:root {
+    --bg-inherit: inherit;
+    --bg-current: currentColor;
+    --bg-transparent: transparent;
+    --bg-black: rgb(0 0 0);
+    --bg-white: rgb(255 255 255);
+    --bg-slate-50: rgb(248 250 252);
+    --bg-slate-100: rgb(241 245 249);
+    --bg-slate-200: rgb(226 232 240);
+    --bg-slate-300: rgb(203 213 225);
+    --bg-slate-400: rgb(148 163 184);
+    --bg-slate-500: rgb(100 116 139);
+    --bg-slate-600: rgb(71 85 105);
+    --bg-slate-700: rgb(51 65 85);
+    --bg-slate-800: rgb(30 41 59);
+    --bg-slate-900: rgb(15 23 42);
+    --bg-gray-50: rgb(249 250 251);
+    --bg-gray-100: rgb(243 244 246);
+    --bg-gray-200: rgb(229 231 235);
+    --bg-gray-300: rgb(209 213 219);
+    --bg-gray-400: rgb(156 163 175);
+    --bg-gray-500: rgb(107 114 128);
+    --bg-gray-600: rgb(75 85 99);
+    --bg-gray-700: rgb(55 65 81);
+    --bg-gray-800: rgb(31 41 55);
+    --bg-gray-900: rgb(17 24 39);
+    --bg-zinc-50: rgb(250 250 250);
+    --bg-zinc-100: rgb(244 244 245);
+    --bg-zinc-200: rgb(228 228 231);
+    --bg-zinc-300: rgb(212 212 216);
+    --bg-zinc-400: rgb(161 161 170);
+    --bg-zinc-500: rgb(113 113 122);
+    --bg-zinc-600: rgb(82 82 91);
+    --bg-zinc-700: rgb(63 63 70);
+    --bg-zinc-800: rgb(39 39 42);
+    --bg-zinc-900: rgb(24 24 27);
+    --bg-neutral-50: rgb(250 250 250);
+    --bg-neutral-100: rgb(245 245 245);
+    --bg-neutral-200: rgb(229 229 229);
+    --bg-neutral-300: rgb(212 212 212);
+    --bg-neutral-400: rgb(163 163 163);
+    --bg-neutral-500: rgb(115 115 115);
+    --bg-neutral-600: rgb(82 82 82);
+    --bg-neutral-700: rgb(64 64 64);
+    --bg-neutral-800: rgb(38 38 38);
+    --bg-neutral-900: rgb(23 23 23);
+    --bg-stone-50: rgb(250 250 249);
+    --bg-stone-100: rgb(245 245 244);
+    --bg-stone-200: rgb(231 229 228);
+    --bg-stone-300: rgb(214 211 209);
+    --bg-stone-400: rgb(168 162 158);
+    --bg-stone-500: rgb(120 113 108);
+    --bg-stone-600: rgb(87 83 78);
+    --bg-stone-700: rgb(68 64 60);
+    --bg-stone-800: rgb(41 37 36);
+    --bg-stone-900: rgb(28 25 23);
+    --bg-red-50: rgb(254 242 242);
+    --bg-red-100: rgb(254 226 226);
+    --bg-red-200: rgb(254 202 202);
+    --bg-red-300: rgb(252 165 165);
+    --bg-red-400: rgb(248 113 113);
+    --bg-red-500: rgb(239 68 68);
+    --bg-red-600: rgb(220 38 38);
+    --bg-red-700: rgb(185 28 28);
+    --bg-red-800: rgb(153 27 27);
+    --bg-red-900: rgb(127 29 29);
+    --bg-orange-50: rgb(255 247 237);
+    --bg-orange-100: rgb(255 237 213);
+    --bg-orange-200: rgb(254 215 170);
+    --bg-orange-300: rgb(253 186 116);
+    --bg-orange-400: rgb(251 146 60);
+    --bg-orange-500: rgb(249 115 22);
+    --bg-orange-600: rgb(234 88 12);
+    --bg-orange-700: rgb(194 65 12);
+    --bg-orange-800: rgb(154 52 18);
+    --bg-orange-900: rgb(124 45 18);
+    --bg-amber-50: rgb(255 251 235);
+    --bg-amber-100: rgb(254 243 199);
+    --bg-amber-200: rgb(253 230 138);
+    --bg-amber-300: rgb(252 211 77);
+    --bg-amber-400: rgb(251 191 36);
+    --bg-amber-500: rgb(245 158 11);
+    --bg-amber-600: rgb(217 119 6);
+    --bg-amber-700: rgb(180 83 9);
+    --bg-amber-800: rgb(146 64 14);
+    --bg-amber-900: rgb(120 53 15);
+    --bg-yellow-50: rgb(254 252 232);
+    --bg-yellow-100: rgb(254 249 195);
+    --bg-yellow-200: rgb(254 240 138);
+    --bg-yellow-300: rgb(253 224 71);
+    --bg-yellow-400: rgb(250 204 21);
+    --bg-yellow-500: rgb(234 179 8);
+    --bg-yellow-600: rgb(202 138 4);
+    --bg-yellow-700: rgb(161 98 7);
+    --bg-yellow-800: rgb(133 77 14);
+    --bg-yellow-900: rgb(113 63 18);
+    --bg-lime-50: rgb(247 254 231);
+    --bg-lime-100: rgb(236 252 203);
+    --bg-lime-200: rgb(217 249 157);
+    --bg-lime-300: rgb(190 242 100);
+    --bg-lime-400: rgb(163 230 53);
+    --bg-lime-500: rgb(132 204 22);
+    --bg-lime-600: rgb(101 163 13);
+    --bg-lime-700: rgb(77 124 15);
+    --bg-lime-800: rgb(63 98 18);
+    --bg-lime-900: rgb(54 83 20);
+    --bg-green-50: rgb(240 253 244);
+    --bg-green-100: rgb(220 252 231);
+    --bg-green-200: rgb(187 247 208);
+    --bg-green-300: rgb(134 239 172);
+    --bg-green-400: rgb(74 222 128);
+    --bg-green-500: rgb(34 197 94);
+    --bg-green-600: rgb(22 163 74);
+    --bg-green-700: rgb(21 128 61);
+    --bg-green-800: rgb(22 101 52);
+    --bg-green-900: rgb(20 83 45);
+    --bg-emerald-50: rgb(236 253 245);
+    --bg-emerald-100: rgb(209 250 229);
+    --bg-emerald-200: rgb(167 243 208);
+    --bg-emerald-300: rgb(110 231 183);
+    --bg-emerald-400: rgb(52 211 153);
+    --bg-emerald-500: rgb(16 185 129);
+    --bg-emerald-600: rgb(5 150 105);
+    --bg-emerald-700: rgb(4 120 87);
+    --bg-emerald-800: rgb(6 95 70);
+    --bg-emerald-900: rgb(6 78 59);
+    --bg-teal-50: rgb(240 253 250);
+    --bg-teal-100: rgb(204 251 241);
+    --bg-teal-200: rgb(153 246 228);
+    --bg-teal-300: rgb(94 234 212);
+    --bg-teal-400: rgb(45 212 191);
+    --bg-teal-500: rgb(20 184 166);
+    --bg-teal-600: rgb(13 148 136);
+    --bg-teal-700: rgb(15 118 110);
+    --bg-teal-800: rgb(17 94 89);
+    --bg-teal-900: rgb(19 78 74);
+    --bg-cyan-50: rgb(236 254 255);
+    --bg-cyan-100: rgb(207 250 254);
+    --bg-cyan-200: rgb(165 243 252);
+    --bg-cyan-300: rgb(103 232 249);
+    --bg-cyan-400: rgb(34 211 238);
+    --bg-cyan-500: rgb(6 182 212);
+    --bg-cyan-600: rgb(8 145 178);
+    --bg-cyan-700: rgb(14 116 144);
+    --bg-cyan-800: rgb(21 94 117);
+    --bg-cyan-900: rgb(22 78 99);
+    --bg-sky-50: rgb(240 249 255);
+    --bg-sky-100: rgb(224 242 254);
+    --bg-sky-200: rgb(186 230 253);
+    --bg-sky-300: rgb(125 211 252);
+    --bg-sky-400: rgb(56 189 248);
+    --bg-sky-500: rgb(14 165 233);
+    --bg-sky-600: rgb(2 132 199);
+    --bg-sky-700: rgb(3 105 161);
+    --bg-sky-800: rgb(7 89 133);
+    --bg-sky-900: rgb(12 74 110);
+    --bg-blue-50: rgb(239 246 255);
+    --bg-blue-100: rgb(219 234 254);
+    --bg-blue-200: rgb(191 219 254);
+    --bg-blue-300: rgb(147 197 253);
+    --bg-blue-400: rgb(96 165 250);
+    --bg-blue-500: rgb(59 130 246);
+    --bg-blue-600: rgb(37 99 235);
+    --bg-blue-700: rgb(29 78 216);
+    --bg-blue-800: rgb(30 64 175);
+    --bg-blue-900: rgb(30 58 138);
+    --bg-indigo-50: rgb(238 242 255);
+    --bg-indigo-100: rgb(224 231 255);
+    --bg-indigo-200: rgb(199 210 254);
+    --bg-indigo-300: rgb(165 180 252);
+    --bg-indigo-400: rgb(129 140 248);
+    --bg-indigo-500: rgb(99 102 241);
+    --bg-indigo-600: rgb(79 70 229);
+    --bg-indigo-700: rgb(67 56 202);
+    --bg-indigo-800: rgb(55 48 163);
+    --bg-indigo-900: rgb(49 46 129);
+    --bg-violet-50: rgb(245 243 255);
+    --bg-violet-100: rgb(237 233 254);
+    --bg-violet-200: rgb(221 214 254);
+    --bg-violet-300: rgb(196 181 253);
+    --bg-violet-400: rgb(167 139 250);
+    --bg-violet-500: rgb(139 92 246);
+    --bg-violet-600: rgb(124 58 237);
+    --bg-violet-700: rgb(109 40 217);
+    --bg-violet-800: rgb(91 33 182);
+    --bg-violet-900: rgb(76 29 149);
+    --bg-purple-50: rgb(250 245 255);
+    --bg-purple-100: rgb(243 232 255);
+    --bg-purple-200: rgb(233 213 255);
+    --bg-purple-300: rgb(216 180 254);
+    --bg-purple-400: rgb(192 132 252);
+    --bg-purple-500: rgb(168 85 247);
+    --bg-purple-600: rgb(147 51 234);
+    --bg-purple-700: rgb(126 34 206);
+    --bg-purple-800: rgb(107 33 168);
+    --bg-purple-900: rgb(88 28 135);
+    --bg-fuchsia-50: rgb(253 244 255);
+    --bg-fuchsia-100: rgb(250 232 255);
+    --bg-fuchsia-200: rgb(245 208 254);
+    --bg-fuchsia-300: rgb(240 171 252);
+    --bg-fuchsia-400: rgb(232 121 249);
+    --bg-fuchsia-500: rgb(217 70 239);
+    --bg-fuchsia-600: rgb(192 38 211);
+    --bg-fuchsia-700: rgb(162 28 175);
+    --bg-fuchsia-800: rgb(134 25 143);
+    --bg-fuchsia-900: rgb(112 26 117);
+    --bg-pink-50: rgb(253 242 248);
+    --bg-pink-100: rgb(252 231 243);
+    --bg-pink-200: rgb(251 207 232);
+    --bg-pink-300: rgb(249 168 212);
+    --bg-pink-400: rgb(244 114 182);
+    --bg-pink-500: rgb(236 72 153);
+    --bg-pink-600: rgb(219 39 119);
+    --bg-pink-700: rgb(190 24 93);
+    --bg-pink-800: rgb(157 23 77);
+    --bg-pink-900: rgb(131 24 67);
+    --bg-rose-50: rgb(255 241 242);
+    --bg-rose-100: rgb(255 228 230);
+    --bg-rose-200: rgb(254 205 211);
+    --bg-rose-300: rgb(253 164 175);
+    --bg-rose-400: rgb(251 113 133);
+    --bg-rose-500: rgb(244 63 94);
+    --bg-rose-600: rgb(225 29 72);
+    --bg-rose-700: rgb(190 18 60);
+    --bg-rose-800: rgb(159 18 57);
+    --bg-rose-900: rgb(136 19 55);    
+}
+
+
+/* root vars */
+:root {
+    --font-base: 1.6rem;
+    --font-weight: 400;
+    --line-height: 1.618;
+    --text-left: left;
+    --text-right: right;
+    --text-center: center;
+    --font-apple: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    --gap-base: 1.6rem;
+    --height-base: 1.6rem;
+    --width-base: 1.6rem;
+    --z-index-1: 1;
+    --z-index-2: 2;
+    --z-index-3: 3;
+    --z-index-4: 4;
+    --z-index-5: 5;
+    --z-index-6: 6;
+    --z-index-7: 7;
+    --z-index-8: 8;
+    --z-index-9: 9;
+    --z-index-10: 10;
+    --z-index-100: 100;
+    --z-index-500: 500;
+    --z-index-997: 997;
+    --z-index-998: 998;
+    --z-index-1001: 1001;
+}
+
+/* html */
+html {
+    font-size: 62.5%;
+}
+
+/* body */
+body {
+    margin: 0;
+    font-family: var(--font-apple);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight);
+    line-height: var(--line-height);
+    color: var(--bg-zinc-700);
+    text-align: var(--text-left);
+    background-color: var(--bg-white);
+    background-color: var(--bg-yellow-50);
+
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;   
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar { 
+    width: calc(var(--width-base) / 2);
+    height: calc(var(--height-base) / 2);
+}
+
+*::-webkit-scrollbar-track { 
+    background-color: var(--bg-zinc-200);
+}
+
+*::-webkit-scrollbar-thumb { 
+    background-color: var(--bg-zinc-500);
+}
+
+/* typography */
+h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: calc(var(--gap-base) / 2);
+}
+
+.text-center {
+    text-align: var(--text-center);
+}
+
+/* ul */
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.nav-link,
+.link { 
+    text-decoration: none;
+}
+
+.link {
+    color: var(--bg-blue-500);
+}
+
+button {
+    display: block;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+/* container */
+.container,
+.container-fluid {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    padding-right: var(--gap-base);
+    padding-left: var(--gap-base);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* sm */
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+/* md */
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }    
+}
+/* lg */
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+}
+/* xl */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+/* xxl */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+}
+
+/* grid */
+.grid {
+    display: grid;
+}
+
+.grid-col-2 {
+    grid-template-columns: repeat(2, auto);
+    grid-gap: var(--gap-base);
+    padding-top: calc(var(--gap-base) * 2);
+    padding-bottom: calc(var(--gap-base) * 2);    
+}
+
+/* images */
+.img {
+    display: block;
+    width: 100%;
+}
+
+html, body {
+    height: 100%;
+}
+
+body #root {
+    display: grid;
+    min-height: 100%;
+}
+
+/* app */
+.app {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+}
+
+/* header */
+.header {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(var(--height-base) * 5);
+    display: grid;
+    align-items: center;
+    justify-items: center;    
+    background-color: var(--bg-white);
+}
+
+.header .container {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    /* justify-content: space-between; */
+    height: 100%;
+}
+
+/* nav */
+.navigation {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(var(--height-base) * 3);
+    z-index: var(--z-index-100);
+    display: grid;
+    align-items: center;
+    background-color: var(--bg-white);
+    /* border-top: 1px solid var(--bg-zinc-200); */
+    border-bottom: 1px solid var(--bg-zinc-200);
+}
+
+.navigation ul { 
+    text-align: var(--text-center);
+}
+
+.navigation ul a {
+    position: relative;
+    color: var(--bg-zinc-500);
+    font-weight: 500;
+    font-size: 1.4rem;
+    padding-top: calc(var(--gap-base) / 2);
+    padding-bottom: calc(var(--gap-base) / 2);
+    padding-right: calc(var(--gap-base) / 2);
+    padding-left: calc(var(--gap-base) / 2);
+    border: 2px solid transparent;
+}
+
+.navigation ul a:hover,
+.navigation ul a.active {
+    color: var(--bg-zinc-700);
+}
+
+@media (min-width: 576px) {
+    .navigation ul a {
+        font-size: 1.6rem;
+        padding-right: var(--gap-base);
+        padding-left: var(--gap-base);    
+    }
+}
+
+/* main */
+.main {
+    position: relative;
+}
+
+/* figure */
+.figure {
+    margin: 0;
+}
+
+/* article */
+.article {
+    position: relative;
+    padding-top: calc(var(--gap-base) * 2);
+    padding-bottom: calc(var(--gap-base) * 2);
+}
+
+/* section */
+.section {
+    position: relative;
+}
+
+
+/* footer */
+.footer {
+    position: relative;
+    text-align: var(--text-center);
+}
+
+.footer-top {
+    padding-top: var(--gap-base);
+    padding-bottom: var(--gap-base);
+    background-color: var(--bg-white);
+    border-top: 1px solid var(--bg-zinc-200);
+}
+
+.footer-bottom {
+    background-color: var(--bg-zinc-200);
+    padding-top: var(--gap-base);
+    padding-bottom: var(--gap-base);    
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+/* photo */
+.photo {
+    position: relative;
+    padding-top: calc(var(--gap-base) * 2);
+    padding-bottom: calc(var(--gap-base) * 2);
+}
+
+
+/* pagination */
+.pagination ul {
+    display: flex;
+    justify-content: center;
+    grid-gap: var(--gap-base);
+}
+
+.pagination button,
+.pagination li span {
+    display: block;
+    padding: calc(var(--gap-base) / 2) var(--gap-base);
+    background-color: white;
+    cursor: pointer;
+    border: 0;
+    border-radius: 3px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.pagination li.is-active span {
+    background-color: var(--bg-yellow-300);
+}
+
+
+/* modal */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: var(--z-index-100);
+    display: none;
+    place-items: center;
+}
+
+.overlay.is-active {
+    display: grid;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 720px;
+    max-height: 720px;
+    z-index: 500;
+    display: none;
+}
+
+.modal .img {
+    padding: var(--gap-base)
+}
+
+.modal.is-active {
+    display: grid;
+}
